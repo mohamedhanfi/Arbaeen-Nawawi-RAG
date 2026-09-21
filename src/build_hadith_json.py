@@ -60,6 +60,18 @@ def clean_hadith_text(t: str) -> str:
     return t.strip()
 
 
+def with_taraddi(n: int, narrator: str) -> str:
+    """Append (رَضِيَ اللهُ تَعَالَى عَنْهُ) after the narrator name.
+
+    Hadith 5's narrator is Aisha (female) so she gets عَنْهَا.
+    """
+    if not narrator or 'رضي الله' in narrator or 'رَضِيَ' in narrator:
+        return narrator
+    narrator = re.sub(r'\s*[-–]+\s*$', '', narrator).strip()  # dangling dash, e.g. عائشة -
+    suffix = '(رَضِيَ اللهُ تَعَالَى عَنْهَا)' if n == 5 else '(رَضِيَ اللهُ تَعَالَى عَنْهُ)'
+    return f'{narrator} {suffix}'
+
+
 def extract_narrator(full_text: str) -> str:
     norm = flat(strip_tash(full_text))
     norm = re.sub(r'^[^ء-غف-ي]*?عن\s+', '', norm)  # drop leading عن + any stray latin chars
@@ -112,7 +124,7 @@ def main() -> None:
             'hadith_number': n,
             'id_label': w.get('id_label', ''),
             'title': w.get('title', ''),
-            'narrator': extract_narrator(text),
+            'narrator': with_taraddi(n, extract_narrator(text)),
             'hadith_text': text,
             'source': extract_source(text, n),
             'sharh': clean_paras(w.get('sharh', '')),
