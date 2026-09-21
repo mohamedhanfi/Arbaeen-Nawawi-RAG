@@ -68,7 +68,9 @@ def with_taraddi(n: int, narrator: str) -> str:
     if not narrator or 'رضي الله' in narrator or 'رَضِيَ' in narrator:
         return narrator
     narrator = re.sub(r'\s*[-–]+\s*$', '', narrator).strip()  # dangling dash, e.g. عائشة -
-    suffix = '(رَضِيَ اللهُ تَعَالَى عَنْهَا)' if n == 5 else '(رَضِيَ اللهُ تَعَالَى عَنْهُ)'
+    # mushaf-style ornate brackets ﴿ ﴾ (U+FD3F/U+FD3E) — closest thing to
+    # the ﷺ ligature, since Unicode has no ligature for رضي الله عنه
+    suffix = '\ufd3fرَضِيَ اللهُ تَعَالَى عَنْهَا\ufd3e' if n == 5 else '\ufd3fرَضِيَ اللهُ تَعَالَى عَنْهُ\ufd3e'
     return f'{narrator} {suffix}'
 
 
