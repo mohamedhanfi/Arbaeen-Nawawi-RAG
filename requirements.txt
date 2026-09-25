@@ -7,3 +7,10 @@ pymupdf
 pytesseract
 Pillow
 easyocr
+rank_bm25
+requests
+beautifulsoup4
+lxml
+numpy
+fastapi
+uvicorn

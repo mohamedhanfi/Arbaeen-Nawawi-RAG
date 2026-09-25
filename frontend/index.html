@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الأربعين النووية</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="banner">
+    <h1>🕌 الأربعين النووية</h1>
+    <p>اسأل بأي صياغة — نعرض الحديث الأنسب كاملًا مع شرحه وراويه</p>
+  </header>
+
+  <main id="chat" aria-live="polite"></main>
+
+  <section id="start-screen">
+    <h2>جرّب سؤالًا جاهزًا</h2>
+    <div id="presets" class="preset-grid"></div>
+  </section>
+
+  <form id="composer">
+    <textarea id="input" rows="1" placeholder="اكتب سؤالك هنا... (Enter للإرسال، Shift+Enter لسطر جديد)"></textarea>
+    <button type="submit" id="send" aria-label="إرسال">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+  </form>
+
+  <footer class="disclaimer">الإجابات للاسترشاد من نص الكتاب وليست فتوى، ويُرجع لأهل العلم في المسائل الشرعية.</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

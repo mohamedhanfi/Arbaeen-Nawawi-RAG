@@ -68,13 +68,19 @@ huggingface_Access_Tokens=hf_...
 OPENROUTER_API_KEY=sk-or-v1-...
 ```
 
-Run the app:
+Run the app (silent, no terminal window):
+
+double-click `run_web.vbs` (opens the browser automatically).
+
+For visible logs use `run_web_debug.bat`; to stop the server use `stop_web.vbs`.
+
+Or manually (one process serves API + frontend, no CORS):
 
 ```bash
-streamlit run web_app.py
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8501
 ```
 
-On Windows you can double-click `run_web.bat` instead. Then open <http://localhost:8501>.
+Then open <http://localhost:8501>. API docs (dev only): <http://localhost:8501/docs>.
 
 ### Example
 
@@ -98,8 +104,9 @@ On Windows you can double-click `run_web.bat` instead. Then open <http://localho
 
 ```text
 .
-├── web_app.py                  # Streamlit app (run this)
-├── run_web.bat                 # Windows launcher
+├── backend/                    # FastAPI: config.py, rag.py, main.py (API + static frontend)
+├── frontend/                   # Static chat UI: index.html, styles.css, app.js
+├── run_web.vbs                 # Silent Windows launcher (no terminal)
 ├── requirements.txt
 ├── .env                        # API keys (git-ignored)
 ├── Book/
@@ -108,8 +115,6 @@ On Windows you can double-click `run_web.bat` instead. Then open <http://localho
 │   ├── document_loading.ipynb  # PDF -> images -> EasyOCR -> ocr_pages.json
 │   ├── text_cleaning.ipynb     # OCR correction and diacritic stripping
 │   ├── hadith_extraction.ipynb # Split the 42 hadiths with metadata
-│   ├── scrape_alnawawiforty.py # Download hadith text, sharh, bios
-│   ├── build_hadith_json.py    # Merge site text with OCR page numbers
 │   ├── create_documents.ipynb  # Build the 116 searchable documents
 │   ├── embeddings.ipynb        # Vectorize documents + accuracy tests
 │   ├── chromadb.ipynb          # Load into ChromaDB
@@ -166,5 +171,5 @@ Diacritic normalization on both sides is mandatory: the indexed texts are vocali
 
 ## Data Sources and Disclaimer
 
-Indexed matn, sharh, and narrator bios come from alnawawiforty.com (via `src/scrape_alnawawiforty.py`). Page numbers and hadith boundaries come from the book's OCR, so edition differences may exist. Check the source site's terms before redistributing the scraped data.
+Indexed matn, sharh, and narrator bios come from alnawawiforty.com. Page numbers and hadith boundaries come from the book's OCR, so edition differences may exist. Check the source site's terms before redistributing the scraped data.
 
