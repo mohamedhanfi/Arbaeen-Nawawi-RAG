@@ -143,15 +143,7 @@ If `documents.json` changes, rebuild `hadith_embeddings.npy` and then the Chroma
 | Embeddings | `omarelshehy/Arabic-Retrieval-v1.0` (768-dim) |
 | Generation | `nvidia/nemotron-3-ultra-550b-a55b:free`, fallback `nex-agi/nex-n2.5-mini:free` (OpenRouter) |
 
-## Retrieval Quality
 
-| Evaluation | Result |
-|---|---|
-| Mini-eval (`embeddings.ipynb`) | 5 / 5 |
-| 10-question eval (`retrieval.ipynb`) | 8 / 10 |
-| Same eval after diacritic normalization | 9 / 10 |
-
-Diacritic normalization on both sides is mandatory: the indexed texts are vocalized, while user queries are not. The remaining failures are indirect sub-topic questions.
 
 ## Limitations and Roadmap
 
