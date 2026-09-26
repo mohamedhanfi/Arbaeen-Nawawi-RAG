@@ -49,7 +49,7 @@ flowchart LR
     L --> U
 ```
 
-The top row is built once offline. The bottom row runs on every question: the query goes through the same normalization and embedding, the closest hadith is retrieved, and the LLM writes the answer using only that excerpt. The sharh and narrator biography are fetched by hadith number and shown alongside.
+The top row is built once offline. The bottom row runs on every question: the query goes through the same normalization and embedding, then retrieval combines dense search with BM25 keyword search (RRF fusion); explicit references ("Hadith 1", "الأول") resolve directly by number. If the best similarity is below threshold (0.35), the app says no suitable hadith was found instead of guessing. Otherwise the LLM writes the answer using only the top excerpts. The sharh and narrator biography are fetched by hadith number and shown alongside.
 
 ## Quick Start
 
@@ -107,6 +107,9 @@ Then open <http://localhost:8501>. API docs (dev only): <http://localhost:8501/d
 ├── backend/                    # FastAPI: config.py, rag.py, main.py (API + static frontend)
 ├── frontend/                   # Static chat UI: index.html, styles.css, app.js
 ├── run_web.vbs                 # Silent Windows launcher (no terminal)
+├── run_web_debug.bat           # Launcher with visible console logs
+├── stop_web.vbs                # Stops the local server
+├── RAG_STAGES.md               # Full technical reference
 ├── requirements.txt
 ├── .env                        # API keys (git-ignored)
 ├── Book/
@@ -154,20 +157,20 @@ Diacritic normalization on both sides is mandatory: the indexed texts are vocali
 
 **Limitations**
 
-- Only the single best-matching hadith is retrieved.
-- No similarity threshold, so off-topic questions still return the nearest hadith.
-- Free OpenRouter models can be rate-limited.
+- Free OpenRouter models can be rate-limited (fallback chain + partial-answer recovery mitigate this).
 - The evaluation set is small (10 questions).
+- Ordinal references cover masculine forms only ("الأول".."الثاني والأربعون").
 
 **Roadmap**
 
-- [ ] Retrieve top 3 hadiths and show related ones
-- [ ] Similarity threshold with a "no relevant hadith found" state
-- [ ] Hybrid search (BM25 + embeddings) and an optional reranker
+- [x] Retrieve top 3 hadiths and show related ones
+- [x] Similarity threshold with a "no relevant hadith found" state
+- [x] Hybrid search (BM25 + embeddings, RRF fusion)
+- [x] Streaming answers and better error handling
+- [x] Chat UI redesign (Arabic typography, dark mode)
 - [ ] Larger evaluation set with hit@1 / hit@3
-- [ ] Streaming answers and better error handling
-- [ ] UI redesign (tabs, Arabic typography, dark mode)
-- [ ] Public demo on Hugging Face Spaces or Streamlit Cloud
+- [ ] Optional reranker
+- [ ] Public demo on Hugging Face Spaces
 
 ## Data Sources and Disclaimer
 
